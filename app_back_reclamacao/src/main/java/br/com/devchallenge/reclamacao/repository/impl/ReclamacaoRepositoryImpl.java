@@ -39,7 +39,7 @@ public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
 		query.addCriteria(Criteria.where("localidade.bairro").regex("^"+ localidade.getBairro()));
 		
 		if(localidade.getUF() != null)
-		query.addCriteria(Criteria.where("localidade.uf").regex("^"+ localidade.getUF()));
+		query.addCriteria(Criteria.where("localidade.UF").regex("^"+ localidade.getUF()));
 		
 		if(localidade.getPais() != null)
 		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getUF()));
@@ -66,7 +66,7 @@ public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
 		query.addCriteria(Criteria.where("localidade.bairro").regex("^"+ localidade.getBairro()));
 		
 		if(localidade.getUF() != null)
-		query.addCriteria(Criteria.where("localidade.uf").regex("^"+ localidade.getUF()));
+		query.addCriteria(Criteria.where("localidade.UF").regex("^"+ localidade.getUF()));
 		
 		if(localidade.getPais() != null)
 		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getUF()));

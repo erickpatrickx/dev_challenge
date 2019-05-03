@@ -65,9 +65,23 @@ public class ReclamacaoController {
 	@GetMapping("/localidade")
 	@ApiOperation(notes = "Recuperar Reclamacoes por Localidade", value = "Filter", response = ResponseEntity.class)
     @Secured({"ROLE_ADMIN"})
-	public ResponseEntity<List<Reclamacao>> getReclamacaoPor(Localidade localidade) {
+	public ResponseEntity<List<Reclamacao>> getReclamacaoPorLocalidade(Localidade localidade) {
 		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacao(localidade));
 	}
+	
+	/**
+	 * Consultar Reclamacao por Empresa
+	 * 
+	 * @param FilterReclamacao
+	 * @return ResponseEntity
+	 */
+	@GetMapping("/empresa")
+	@ApiOperation(notes = "Recuperar Reclamacoes por Empresa", value = "Filter", response = ResponseEntity.class)
+    @Secured({"ROLE_ADMIN"})
+	public ResponseEntity<List<Reclamacao>> getReclamacaoPorEmpresa(@RequestParam String cnpj) {
+		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoPorEmpresa(cnpj));
+	}
+	
 
 	/**
 	 * Consultar Reclamacao por parametros
@@ -78,7 +92,7 @@ public class ReclamacaoController {
 	@GetMapping("/{id}")
 	@ApiOperation(notes = "Recuperar uma Reclamacao por id", value = "Filter", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
-	public ResponseEntity<Reclamacao> getReclamacaoPorNome(@PathVariable String id) {
+	public ResponseEntity<Reclamacao> getReclamacaoPorID(@PathVariable String id) {
 		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoById(id));
 	}
 	

@@ -7,4 +7,6 @@ spring:
       database: challenge
       host: localhost
       port: 27017
-      
+  
+  
+  

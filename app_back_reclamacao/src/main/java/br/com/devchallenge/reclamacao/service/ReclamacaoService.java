@@ -37,11 +37,21 @@ public class ReclamacaoService {
 	/**
 	 * Metodo de buscar uma Reclamacao por localidade
 	 * 
-	 * @param filter
+	 * @param Localidade localidade
 	 * @return List<Reclamacao>
 	 */
 	public List<Reclamacao> findReclamacao(Localidade localidade) {
 		return repository.findReclamacoesPorLocalidade(localidade);
+	}
+	
+	/**
+	 * Metodo de buscar uma Reclamacao por Empresa
+	 * 
+	 * @param String cnpj
+	 * @return List<Reclamacao>
+	 */
+	public List<Reclamacao> findReclamacaoPorEmpresa(String cnpj) {
+		return repository.findReclamacoesPorEmpresa(cnpj);
 	}
 
 	/**
