@@ -1,0 +1,10 @@
+server:
+  port: 8889
+  
+spring:
+  data:
+    mongodb:
+      database: challenge_test
+      host: localhost
+      port: 27017
+      

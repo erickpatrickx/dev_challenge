@@ -1,0 +1,9 @@
+server:
+  port: 9090
+  
+spring:
+  data:
+    mongodb:
+      database: challenge
+      host: localhost
+      port: 27017

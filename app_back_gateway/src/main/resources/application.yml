@@ -1,0 +1,35 @@
+server:
+  port: ${PORT:8080}
+  
+logging:
+  level:
+    org.springframework.cloud.netflix.zuul: TRACE
+
+
+security:
+  basic:
+    enabled: false
+
+spring:
+  session:
+    store-type: none
+
+management:
+  security:
+    enabled: false
+zuul:
+  routes:  
+    auth:
+      url: http://localhost:8888/
+      serviceId: auth
+    empresa:
+      url: http://localhost:8889/
+      sensitiveHeaders:
+      serviceId: empresa 
+    reclamacao:
+      url: http://localhost:9090/
+      sensitiveHeaders:
+      serviceId: reclamacao
+      
+      
+      
