@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+ mongodb:
+    image: 'mongo:3.4.1'
+    ports:
+      - '27017:27017'
+    volumes:
+      - /var/data
+ gateway:
+    build:
+      context: ./app_back_gateway
+      dockerfile: Dockerfile
+    image: gateway-server-image
+    ports:
+      - 8080:8080
+ 
+ auth:
+    build:
+      context: ./app_back_auth
+      dockerfile: Dockerfile
+    image: auth-server-image
+    ports:
+      - 8888:8888
+ 
+ empresa:
+    build:
+      context: ./app_back_empresa
+      dockerfile: Dockerfile
+    image: empresa-server-image
+    depends_on: 
+      - mongodb
+    ports:
+      - 8889:8889
+ 
+ reclamacao:
+    build:
+      context: ./app_back_reclamacao
+      dockerfile: Dockerfile
+    image: reclamacao-server-image
+    depends_on: 
+      - mongodb
+    ports:
+      - 9090:9090
+
+
+  

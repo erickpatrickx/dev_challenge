@@ -1,5 +1,16 @@
 FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-COPY target/app-back-reclamacao-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]
+FROM maven:alpine
+
+# image layer
+WORKDIR /app
+ADD pom.xml /app
+RUN mvn verify clean --fail-never
+
+# Image layer: with the application
+COPY . /app
+RUN mvn -v
+RUN mvn clean install -DskipTests
+
+ADD /app/target/*.jar target/*.jar app-back-reclamacao-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","app-back-reclamacao-0.0.1-SNAPSHOT.jar"]
 

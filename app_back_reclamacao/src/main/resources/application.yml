@@ -5,5 +5,5 @@ spring:
   data:
     mongodb:
       database: challenge
-      host: localhost
+      host: 172.18.0.1
       port: 27017
