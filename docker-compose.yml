@@ -7,6 +7,15 @@ services:
       - '27017:27017'
     volumes:
       - /var/data
+      
+ discovery:
+    build:
+      context: ./app_back_discovery
+      dockerfile: Dockerfile
+    image: discovery-server-image
+    ports:
+      - 8761:8761
+      
  gateway:
     build:
       context: ./app_back_gateway
