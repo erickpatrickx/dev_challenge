@@ -21,6 +21,7 @@
 
 
      <modules>
+        <module>app_back_discovery</module>
      	<module>app_back_reclamacao</module>
 		<module>app_back_empresa</module>
 		<module>app_back_gateway</module>

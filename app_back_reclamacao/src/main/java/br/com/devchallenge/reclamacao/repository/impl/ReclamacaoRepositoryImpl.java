@@ -11,6 +11,11 @@ import br.com.devchallenge.reclamacao.entity.Localidade;
 import br.com.devchallenge.reclamacao.entity.Reclamacao;
 import br.com.devchallenge.reclamacao.repository.ReclamacaoRepositoryCustom;
 
+/**
+ * Implementação do repositorio de Reclamação
+ * @author erick.oliveira
+ *
+ */
 public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
 
 	private final MongoTemplate mongoTemplate;
@@ -22,9 +27,9 @@ public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
  
 	
 	@Override
-	public List<Reclamacao> findReclamacoesPorEmpresa(String cnpj) {
+	public List<Reclamacao> findReclamacoesPorEmpresa(String id) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("empresa.cnpj").is(cnpj));
+		query.addCriteria(Criteria.where("empresa.id").is(id));
 		return 	mongoTemplate.find(query,Reclamacao.class);
 	}	
 	
@@ -42,17 +47,17 @@ public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
 		query.addCriteria(Criteria.where("localidade.UF").regex("^"+ localidade.getUF()));
 		
 		if(localidade.getPais() != null)
-		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getUF()));
+		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getPais()));
 			
 		return 	mongoTemplate.find(query,Reclamacao.class);
 	}	
 	
 	
 	@Override
-	public Long findQuantidadeReclamacoesPorEmpresa(String cnpj) {
+	public Long findQuantidadeReclamacoesPorEmpresa(String id) {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("empresa.cnpj").is(cnpj));
-		return 	mongoTemplate.count(query,Long.class);
+		query.addCriteria(Criteria.where("empresa.id").is(id));
+		return 	mongoTemplate.count(query,Reclamacao.class);
 	}	
 	
 	@Override
@@ -69,9 +74,9 @@ public class ReclamacaoRepositoryImpl implements ReclamacaoRepositoryCustom {
 		query.addCriteria(Criteria.where("localidade.UF").regex("^"+ localidade.getUF()));
 		
 		if(localidade.getPais() != null)
-		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getUF()));
+		query.addCriteria(Criteria.where("localidade.pais").regex("^"+ localidade.getPais()));
 			
-		return 	mongoTemplate.count(query,Long.class);
+		return 	mongoTemplate.count(query,Reclamacao.class);
 	}	
 	
  

@@ -4,32 +4,16 @@ server:
 logging:
   level:
     org.springframework.cloud.netflix.zuul: TRACE
-
-
-security:
-  basic:
-    enabled: false
-
 spring:
-  session:
-    store-type: none
+  application:
+    name: gateway
 
-management:
-  security:
-    enabled: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+         
 zuul:
-  routes:  
-    auth:
-      url: http://localhost:8888/
-      serviceId: auth
-    empresa:
-      url: http://localhost:8889/
-      sensitiveHeaders:
-      serviceId: empresa 
-    reclamacao:
-      url: http://localhost:9090/
-      sensitiveHeaders:
-      serviceId: reclamacao
-      
-      
-      
+ sensitive-headers:
+  
+          

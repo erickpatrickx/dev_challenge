@@ -1,4 +1,6 @@
-package br.com.devchallenge.reclamacao.entity;
+package br.com.devchallenge.reclamacao.dtos;
+
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,17 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Localidade {
-
-	private String logradouro;
+public class EmpresaDTO {
 	
-	private String bairro;
-	
-	private String cidade;
-	
-	private String UF;
-	
-	private String pais;
-	
-	
+	@NotEmpty( message = "Informe a empresa")
+	private String id;
 }

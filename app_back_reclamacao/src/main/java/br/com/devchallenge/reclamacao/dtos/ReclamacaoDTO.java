@@ -1,11 +1,7 @@
-package br.com.devchallenge.reclamacao.entity;
+package br.com.devchallenge.reclamacao.dtos;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,12 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Document
-public class Reclamacao {
+public class ReclamacaoDTO {
 
-
-	@Id
-	private String id;
 
 	@NotEmpty
     @Size(min=3,max=100,message="Campo Titulo: Limite de caracteres excedido - minimo 3 e maximo 250")
@@ -35,10 +27,9 @@ public class Reclamacao {
     @Size(min=3,max=100,message="Campo Titulo: Limite de caracteres excedido - minimo 3 e maximo 250")
 	private String descricao;
 	
-	private Localidade localidade;
+	private LocalidadeDTO localidade;
 	
-	@DBRef
-	private Empresa empresa;
+	private EmpresaDTO empresa;
 	
 	
 }

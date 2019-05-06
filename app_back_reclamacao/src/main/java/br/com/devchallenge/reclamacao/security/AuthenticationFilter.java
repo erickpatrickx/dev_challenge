@@ -9,13 +9,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
-
-import br.com.devchallenge.reclamacao.client.AuthClient;
 
 /**
  * 
@@ -28,8 +25,6 @@ public class AuthenticationFilter extends GenericFilterBean {
 
 	private final TokenAuthenticationService tokenAuthenticationService;
 
-	@Autowired
-	AuthClient authClient;
 	
 	public AuthenticationFilter(TokenAuthenticationService authenticationService) {
 		this.tokenAuthenticationService = authenticationService;

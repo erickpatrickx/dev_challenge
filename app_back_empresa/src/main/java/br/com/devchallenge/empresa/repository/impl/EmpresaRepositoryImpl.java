@@ -10,6 +10,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import br.com.devchallenge.empresa.entity.Empresa;
 import br.com.devchallenge.empresa.repository.EmpresaRepositoryCustom;
 
+/**
+ * Implementação do repositorio de empresa
+ * @author erick.oliveira
+ *
+ */
 public class EmpresaRepositoryImpl implements EmpresaRepositoryCustom {
 
 	private final MongoTemplate mongoTemplate;

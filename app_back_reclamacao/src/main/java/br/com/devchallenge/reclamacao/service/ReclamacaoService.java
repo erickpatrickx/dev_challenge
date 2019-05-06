@@ -37,12 +37,23 @@ public class ReclamacaoService {
 	/**
 	 * Metodo de buscar uma Reclamacao por localidade
 	 * 
-	 * @param Localidade localidade
+	 * @param LocalidadeDTO localidade
 	 * @return List<Reclamacao>
 	 */
-	public List<Reclamacao> findReclamacao(Localidade localidade) {
+	public List<Reclamacao> findReclamacaoPorLocalidade(Localidade localidade) {
 		return repository.findReclamacoesPorLocalidade(localidade);
 	}
+	
+	/**
+	 * Metodo de buscar uma Reclamacao por localidade
+	 * 
+	 * @param LocalidadeDTO localidade
+	 * @return List<Reclamacao>
+	 */
+	public Long findQuantidadeReclamacaoPorLocalidade(Localidade localidade) {
+		return repository.findQuantidadeReclamacoesPorLocalidade(localidade);
+	}
+	
 	
 	/**
 	 * Metodo de buscar uma Reclamacao por Empresa
@@ -50,10 +61,22 @@ public class ReclamacaoService {
 	 * @param String cnpj
 	 * @return List<Reclamacao>
 	 */
-	public List<Reclamacao> findReclamacaoPorEmpresa(String cnpj) {
-		return repository.findReclamacoesPorEmpresa(cnpj);
+	public List<Reclamacao> findReclamacaoPorEmpresa(String id) {
+		return repository.findReclamacoesPorEmpresa(id);
 	}
-
+	
+	/**
+	 * Metodo de buscar quantidade Reclamacao por empresa
+	 * 
+	 * @param id
+	 * @return List<Reclamacao>
+	 */
+	public Long findQuantidadeReclamacaoPorEmpresa(String id) {
+		return repository.findQuantidadeReclamacoesPorEmpresa(id);
+	}
+	
+	
+	
 	/**
 	 * Metodo de buscar uma Reclamacao por id
 	 * 
@@ -108,4 +131,13 @@ public class ReclamacaoService {
 		repository.deleteById(id);
 	}
 
+	
+	/**
+	 * Metodo para remover todoas as reclamações
+	 * 
+	 */
+	public void deleteAll() {
+		repository.deleteAll();
+	}
+	
 }

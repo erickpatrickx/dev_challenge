@@ -48,7 +48,7 @@ public class TokenAuthenticationService {
 	
 	
 	
-	/**Metodo de adição de autenticação 
+	/**Metodo de geração de autenticação 
 	 * @author erick.oliveira
 	 * @param response
 	 * @param username

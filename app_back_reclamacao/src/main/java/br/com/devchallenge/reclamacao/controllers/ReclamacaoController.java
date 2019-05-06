@@ -2,6 +2,7 @@ package br.com.devchallenge.reclamacao.controllers;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.devchallenge.reclamacao.dtos.ReclamacaoDTO;
 import br.com.devchallenge.reclamacao.entity.Localidade;
 import br.com.devchallenge.reclamacao.entity.Reclamacao;
 import br.com.devchallenge.reclamacao.exception.BadRequestException;
@@ -33,16 +35,17 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/reclamacoes")
 public class ReclamacaoController {
-	
+
 	private final ReclamacaoService reclamacaoService;
 
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Autowired
 	public ReclamacaoController(ReclamacaoService reclamacaoService) {
 		this.reclamacaoService = reclamacaoService;
 	}
-	
-	
+
 	/**
 	 * Listar todas reclamações
 	 * 
@@ -50,38 +53,64 @@ public class ReclamacaoController {
 	 * @return ResponseEntity
 	 */
 	@GetMapping
-	@ApiOperation(notes = "Recuperar  Reclamacoes ", value = "", response = ResponseEntity.class)
-    @Secured({"ROLE_ADMIN","ROLE_USER"})
-	public ResponseEntity<List<Reclamacao>> getReclamacoes(Localidade localidade) {
+	@ApiOperation(notes = "Listar todas as reclamações ", value = "Listar todas as reclamações", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	public ResponseEntity<List<Reclamacao>> getReclamacoes() {
 		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacoesAll());
 	}
-	
+
 	/**
-	 * Consultar Reclamacao por Localidade
+	 * Consultar quantidade de Reclamacaoes por Localidade
 	 * 
 	 * @param FilterReclamacao
+	 * @return ResponseEntity
+	 */
+	@GetMapping("/quantidade/localidade")
+	@ApiOperation(notes = "Consultar quantidade de reclamações por localidade", value = "Consultar quantidade de reclamações por localidade", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN" })
+	public ResponseEntity<Long> getReclamacaoQuantidadePorLocalidade(Localidade localidade) {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(reclamacaoService.findQuantidadeReclamacaoPorLocalidade(localidade));
+	}
+
+	/**
+	 * Consultar Quantidade de Reclamacao por Localidade
+	 * 
+	 * @param Localidade
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/localidade")
-	@ApiOperation(notes = "Recuperar Reclamacoes por Localidade", value = "Filter", response = ResponseEntity.class)
-    @Secured({"ROLE_ADMIN"})
-	public ResponseEntity<List<Reclamacao>> getReclamacaoPorLocalidade(Localidade localidade) {
-		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacao(localidade));
+	@ApiOperation(notes = "Consultar reclamações por localidade", value = "Consultar reclamações por localidade", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	public ResponseEntity<?> getReclamacaoPorLocalidade(Localidade localidade) {
+		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoPorLocalidade(localidade));
 	}
-	
+
 	/**
-	 * Consultar Reclamacao por Empresa
+	 * Consultar Quantidade Reclamacao por Empresa
 	 * 
-	 * @param FilterReclamacao
+	 * @param id empresa
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/empresa")
-	@ApiOperation(notes = "Recuperar Reclamacoes por Empresa", value = "Filter", response = ResponseEntity.class)
-    @Secured({"ROLE_ADMIN"})
-	public ResponseEntity<List<Reclamacao>> getReclamacaoPorEmpresa(@RequestParam String cnpj) {
-		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoPorEmpresa(cnpj));
+	@ApiOperation(notes = "Consultar reclamações por empresa", value = "Consultar reclamações por empresa", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN" })
+	public ResponseEntity<List<Reclamacao>> getReclamacaoPorEmpresa(@RequestParam String id) {
+		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoPorEmpresa(id));
 	}
-	
+
+	/**
+	 * Consultar Reclamacao por Empresa
+	 * 
+	 * @param ID
+	 * @return ResponseEntity
+	 */
+	@GetMapping("/quantidade/empresa")
+	@ApiOperation(notes = "Quantidade de reclamações por empresa", value = "Quantidade de reclamações por empresa", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	public ResponseEntity<Long> getReclamacaoQuantidadePorEmpresa(@RequestParam String id) {
+		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findQuantidadeReclamacaoPorEmpresa(id));
+	}
 
 	/**
 	 * Consultar Reclamacao por parametros
@@ -90,12 +119,12 @@ public class ReclamacaoController {
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/{id}")
-	@ApiOperation(notes = "Recuperar uma Reclamacao por id", value = "Filter", response = ResponseEntity.class)
-    @Secured("ROLE_ADMIN")
+	@ApiOperation(notes = "Consultar reclamação por ID", value = "Consultar reclamação por ID", response = ResponseEntity.class)
+	@Secured("ROLE_ADMIN")
 	public ResponseEntity<Reclamacao> getReclamacaoPorID(@PathVariable String id) {
 		return ResponseEntity.status(HttpStatus.OK).body(reclamacaoService.findReclamacaoById(id));
 	}
-	
+
 	/**
 	 * Metodo responsavel por salvar uma Reclamacao
 	 * 
@@ -103,41 +132,42 @@ public class ReclamacaoController {
 	 * @return ResponseEntity
 	 */
 	@PostMapping("/save")
-	@ApiOperation(notes = "Salvar os dados de uma Reclamacao", value = "Reclamacao", response = ResponseEntity.class)
-    @Secured("ROLE_ADMIN")
-	public ResponseEntity<Reclamacao> save(@Validated @RequestBody Reclamacao Reclamacao) {
-		Reclamacao = reclamacaoService.save(Reclamacao);
-		return ResponseEntity.status(HttpStatus.CREATED).body(Reclamacao);
+	@ApiOperation(notes = "Salvar Reclamação", value = "Salvar Reclamação", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	public ResponseEntity<Reclamacao> save(@Validated @RequestBody ReclamacaoDTO dto) {
+		Reclamacao reclamacao = modelMapper.map(dto, Reclamacao.class);
+		reclamacao = reclamacaoService.save(reclamacao);
+		return ResponseEntity.status(HttpStatus.CREATED).body(reclamacao);
 	}
 
 	/**
 	 * Metodo responsavel por atualizar uma Reclamacao
 	 * 
-	 * @param Reclamacao
+	 * @param rteclamacao
 	 * @return ResponseEntity
 	 */
 	@PutMapping("/update/{id}")
-	@ApiOperation(notes = "Atualiar os dados de uma Reclamacao", value = "Reclamacao", response = ResponseEntity.class)
-    @Secured("ROLE_ADMIN")
-	public ResponseEntity<Reclamacao> update(@Validated @RequestBody Reclamacao Reclamacao,@PathVariable String id)
-			 {
+	@ApiOperation(notes = "Atualizar Reclamação", value = "Atualizar Reclamação", response = ResponseEntity.class)
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	public ResponseEntity<Reclamacao> update(@Validated @RequestBody Reclamacao dto, @PathVariable String id) {
 		if (id == null) {
 			throw new BadRequestException("Informe o id");
 		}
-		Reclamacao = reclamacaoService.update(Reclamacao,id);
-		return ResponseEntity.ok().body(Reclamacao);
+		Reclamacao reclamacao = modelMapper.map(dto, Reclamacao.class);
+		reclamacao = reclamacaoService.update(reclamacao, id);
+		return ResponseEntity.ok().body(reclamacao);
 	}
-	
+
 	/**
 	 * Metodo responsavel por deletar uma Reclamacao
 	 * 
-	 * @param Reclamacao
+	 * @param ReclamacaoDTO
 	 * @return ResponseEntity
 	 */
 	@DeleteMapping("{id}")
-	@ApiOperation(notes = "Deletar os dados de uma Reclamacao", value = "Reclamacao", response = ResponseEntity.class)
-    @Secured("ROLE_ADMIN")
-	public ResponseEntity<?> update(@PathVariable String id){
+	@ApiOperation(notes = "Excluir Reclamação", value = "Excluir Reclamação", response = ResponseEntity.class)
+	@Secured("ROLE_ADMIN")
+	public ResponseEntity<?> update(@PathVariable String id) {
 		if (id == null) {
 			throw new BadRequestException("Informe o id");
 		}
@@ -145,5 +175,4 @@ public class ReclamacaoController {
 		return ResponseEntity.ok().build();
 	}
 
-	
 }

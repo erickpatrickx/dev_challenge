@@ -10,7 +10,7 @@ import br.com.devchallenge.empresa.entity.Empresa;
 
 
 /**
- * Repositorio do Store
+ * Repositorio da  Empresa Custom
  * @author erick.oliveira
  *
  */

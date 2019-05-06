@@ -1,9 +1,9 @@
-package br.com.devchallenge.empresa.repository;
+package br.com.devchallenge.reclamacao.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.devchallenge.empresa.entity.Empresa;
+import br.com.devchallenge.reclamacao.entity.Empresa;
 
 
 /**
@@ -12,7 +12,7 @@ import br.com.devchallenge.empresa.entity.Empresa;
  *
  */
 @Repository
-public interface EmpresaRepository extends MongoRepository<Empresa, String>,EmpresaRepositoryCustom {
+public interface EmpresaRepository extends MongoRepository<Empresa, String> {
 
     
 }

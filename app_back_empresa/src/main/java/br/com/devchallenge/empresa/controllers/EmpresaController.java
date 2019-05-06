@@ -2,6 +2,7 @@ package br.com.devchallenge.empresa.controllers;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.devchallenge.empresa.dtos.EmpresaDTO;
 import br.com.devchallenge.empresa.entity.Empresa;
 import br.com.devchallenge.empresa.exception.BadRequestException;
 import br.com.devchallenge.empresa.service.EmpresaService;
@@ -35,6 +37,8 @@ public class EmpresaController {
 	
 	private final EmpresaService empresaService;
 
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Autowired
 	public EmpresaController(EmpresaService empresaService) {
@@ -49,22 +53,22 @@ public class EmpresaController {
 	 * @return ResponseEntity
 	 */
 	@GetMapping
-	@ApiOperation(notes = "Recuperar uma Empresa por nome e ou CNPJ", value = "Filter", response = ResponseEntity.class)
+	@ApiOperation(notes = "Consultar empresa por nome e/ou CNPJ", value = "Consultar empresa por nome e/ou CNPJ", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
 	public ResponseEntity<List<Empresa>> getEmpresaPorNome(@RequestParam(required = false) String nome , @RequestParam(required = false) String cnpj) {
 		return ResponseEntity.status(HttpStatus.OK).body(empresaService.findEmpresa(nome, cnpj));
 	}
 
 	/**
-	 * Consultar Empresa por parametros
+	 * Consultar Empresa por ID
 	 * 
 	 * @param FilterEmpresa
 	 * @return ResponseEntity
 	 */
 	@GetMapping("/{id}")
-	@ApiOperation(notes = "Recuperar uma Empresa por id", value = "Filter", response = ResponseEntity.class)
+	@ApiOperation(notes = "Consultar empresa por ID", value = "Consultar empresa por ID", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
-	public ResponseEntity<Empresa> getEmpresaPorNome(@PathVariable String id) {
+	public ResponseEntity<Empresa> getEmpresaPoID(@PathVariable String id) {
 		return ResponseEntity.status(HttpStatus.OK).body(empresaService.findEmpresaById(id));
 	}
 	
@@ -75,9 +79,10 @@ public class EmpresaController {
 	 * @return ResponseEntity
 	 */
 	@PostMapping("/save")
-	@ApiOperation(notes = "Salvar os dados de uma Empresa", value = "Empresa", response = ResponseEntity.class)
+	@ApiOperation(notes = "Salvar Empresa", value = "Salvar Empresa", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
-	public ResponseEntity<Empresa> save(@Validated @RequestBody Empresa empresa) {
+	public ResponseEntity<Empresa> save(@Validated @RequestBody EmpresaDTO dto) {
+		Empresa empresa =  modelMapper.map(dto, Empresa.class);
 		empresa = empresaService.save(empresa);
 		return ResponseEntity.status(HttpStatus.CREATED).body(empresa);
 	}
@@ -89,13 +94,14 @@ public class EmpresaController {
 	 * @return ResponseEntity
 	 */
 	@PutMapping("/update/{id}")
-	@ApiOperation(notes = "Atualiar os dados de uma Empresa", value = "Empresa", response = ResponseEntity.class)
+	@ApiOperation(notes = "Atualizar Empresa", value = "Atualizar Empresa", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
-	public ResponseEntity<Empresa> update(@Validated @RequestBody Empresa empresa,@PathVariable String id)
+	public ResponseEntity<Empresa> update(@Validated @RequestBody EmpresaDTO dto,@PathVariable String id)
 			 {
 		if (id == null) {
 			throw new BadRequestException("Informe o id");
 		}
+		Empresa empresa =  modelMapper.map(dto, Empresa.class);
 		empresa = empresaService.update(empresa,id);
 		return ResponseEntity.ok().body(empresa);
 	}
@@ -107,7 +113,7 @@ public class EmpresaController {
 	 * @return ResponseEntity
 	 */
 	@DeleteMapping("{id}")
-	@ApiOperation(notes = "Deletar os dados de uma Empresa", value = "Empresa", response = ResponseEntity.class)
+	@ApiOperation(notes = "Deletar Empresa", value = "Deletar Empresa", response = ResponseEntity.class)
     @Secured("ROLE_ADMIN")
 	public ResponseEntity<?> update(@PathVariable String id){
 		if (id == null) {
