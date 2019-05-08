@@ -38,13 +38,13 @@ public class AuthServiceTest {
 	HttpServletResponse response = mock(HttpServletResponse.class);
 
 	@Test
-	public void giveToken_whenGetToken_thenReturnToken() throws IOException {
+	public void deveRealizarLoginRetornarToken() throws IOException {
 		String token = authService.login(request, response, login.getLogin(), login.getSenha());
 		Assert.assertNotNull(token);
 	}
 
 	@Test
-	public void giveToken_whenGetTokenFail_thenInternalServerError() throws IOException {
+	public void naoDeveRealizarLoginRetornarToken() throws IOException {
 		String token = authService.login(request, response, loginFail.getLogin(), loginFail.getSenha());
 		Assert.assertNull(token);
 	}

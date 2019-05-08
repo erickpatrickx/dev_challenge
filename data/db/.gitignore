@@ -1,0 +1,6 @@
+/WiredTiger
+/WiredTiger.lock
+/WiredTiger.wt
+/WiredTiger.wt.1
+/WiredTiger.wt.2
+/mongod.lock

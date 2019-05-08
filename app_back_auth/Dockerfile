@@ -1,16 +1,5 @@
 FROM openjdk:8-jdk-alpine
-FROM maven:alpine
-
-# image layer
-WORKDIR /app
-ADD pom.xml /app
-RUN mvn verify clean --fail-never
-
-# Image layer: with the application
-COPY . /app
-RUN mvn -v
-RUN mvn clean install -DskipTests
-
-ADD /app/target/*.jar target/*.jar app-back-auth-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java","-jar","app-back-auth-0.0.1-SNAPSHOT.jar"]
-
+VOLUME /tmp
+EXPOSE 8888
+COPY target/app-back-auth-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar"]

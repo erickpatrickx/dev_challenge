@@ -16,7 +16,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Config do swager 2
+ * Config do swager
  * 
  * @author erick.oliveira
  *
@@ -26,7 +26,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration extends WebMvcConfigurationSupport {
 	private final Environment environment;
 
-	private String applicationName = "auth";
+	private String applicationName = "euth";
 
 	private String appVersion = "0.0.1";
 
@@ -37,8 +37,9 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
 
 	@Bean
 	public Docket productApi() {
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("br.com.devchallenge.auth"))
-				.build().apiInfo(createApiInfo());
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("br.com.devchallenge.auth")).build().apiInfo(createApiInfo())
+				.useDefaultResponseMessages(false);
 	}
 
 	@Override
@@ -51,5 +52,6 @@ public class SwaggerConfiguration extends WebMvcConfigurationSupport {
 		return new ApiInfo(environment.getProperty(applicationName), null, environment.getProperty(appVersion), null,
 				null, null, null, Collections.emptyList());
 	}
+
 
 }

@@ -22,7 +22,9 @@ services:
       dockerfile: Dockerfile
     image: gateway-server-image
     ports:
-      - 8080:8080
+      - 8762:8762
+    depends_on: 
+      - discovery
  
  auth:
     build:
@@ -31,26 +33,29 @@ services:
     image: auth-server-image
     ports:
       - 8888:8888
+    depends_on: 
+      - discovery
  
  empresa:
     build:
       context: ./app_back_empresa
       dockerfile: Dockerfile
     image: empresa-server-image
-    depends_on: 
-      - mongodb
     ports:
       - 8889:8889
+    depends_on: 
+      - mongodb
+      - discovery      
  
  reclamacao:
     build:
       context: ./app_back_reclamacao
       dockerfile: Dockerfile
     image: reclamacao-server-image
-    depends_on: 
-      - mongodb
     ports:
       - 9090:9090
-
+    depends_on: 
+      - mongodb
+      - discovery
 
   
